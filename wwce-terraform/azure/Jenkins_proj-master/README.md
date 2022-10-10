@@ -37,4 +37,5 @@ cleanup the lab
 =========
 ```
 python3 ./destroy.py 
+deactivate
 ```
