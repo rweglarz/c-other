@@ -16,14 +16,14 @@ resource "azurerm_virtual_machine" "firewall" {
   plan {
     name = "bundle2"
     publisher = "paloaltonetworks"
-    product = "vmseries1"
+    product = "vmseries-flex"
   }
 
 	storage_image_reference	{
 		publisher 	= "paloaltonetworks"
-		offer		= "vmseries1"
+		offer		= "vmseries-flex"
 		sku			= "bundle2"
-		version		= "8.1.0"
+		version		= "10.2.2"
 	}
 
 	storage_os_disk {

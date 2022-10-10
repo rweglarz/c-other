@@ -693,7 +693,7 @@
               <secondary>10.0.0.2</secondary>
             </servers>
           </dns-setting>
-          <login-banner>Gold 1.0 - PANOS 8.0</login-banner>
+          <login-banner>jenkins lab</login-banner>
           <service>
             <disable-telnet>yes</disable-telnet>
             <disable-http>yes</disable-http>
@@ -846,7 +846,7 @@
           <rulebase>
             <default-security-rules>
               <rules>
-                <entry name="intrazone-default">
+                <entry name="intrazone-default" uuid="44becad2-9394-4186-af26-06e3f34aaa04">
                   <action>allow</action>
                   <log-start>no</log-start>
                   <log-end>yes</log-end>
@@ -857,7 +857,7 @@
                   </profile-setting>
                   <log-setting>default</log-setting>
                 </entry>
-                <entry name="interzone-default">
+                <entry name="interzone-default" uuid="be58876a-6dcd-4eda-860b-44eebdfadce8">
                   <action>deny</action>
                   <log-start>no</log-start>
                   <log-end>yes</log-end>
@@ -870,7 +870,7 @@
             </security>
             <decryption>
               <rules>
-                <entry name="NO-Decrypt URL Categories">
+                <entry name="NO-Decrypt URL Categories" uuid="c168000f-6f9e-47f2-be70-92be92a57ccb">
                   <category>
                     <member>financial-services</member>
                     <member>government</member>
@@ -903,7 +903,7 @@
                   <disabled>yes</disabled>
                   <description>This rule does not do Decryption.  This rule is validating SSL Protocol Communications.</description>
                 </entry>
-                <entry name="NO-Decrypt Rule">
+                <entry name="NO-Decrypt Rule" uuid="67e2c4e6-a9a8-46a4-948f-88d46bd745c8">
                   <category>
                     <member>any</member>
                   </category>
