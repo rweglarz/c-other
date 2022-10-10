@@ -11,7 +11,7 @@ resource "azurerm_storage_account" "jenkins" {
 }
 
 resource "azurerm_storage_share" "bootstrap" {
-  name = "bootstrap"
-  storage_account_name = "${azurerm_storage_account.jenkins.name}"
-  quota = 1
+  name                 = "bootstrap"
+  storage_account_name = azurerm_storage_account.jenkins.name
+  quota                = 1
 }

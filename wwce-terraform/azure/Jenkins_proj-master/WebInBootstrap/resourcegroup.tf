@@ -11,6 +11,6 @@ resource "random_id" "resource_group" {
 
 # Create a resource group
 resource "azurerm_resource_group" "resourcegroup" {
-	name		= "${var.RG_Name}-${lower(random_id.resource_group.hex)}"
-	location	= "${var.Azure_Region}"
+  name     = "${var.RG_Name}-${lower(random_id.resource_group.hex)}"
+  location = var.Azure_Region
 }

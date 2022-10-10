@@ -1,21 +1,21 @@
 data "template_file" "attacker" {
-  
-  template = "${file("${path.root}${var.Attack_Initscript_Path}")}"
+
+  template = file("${path.root}${var.Attack_Initscript_Path}")
 }
 data "template_cloudinit_config" "attacker" {
   gzip          = true
   base64_encode = true
 
   part {
-    content = "${data.template_file.attacker.rendered}"
+    content = data.template_file.attacker.rendered
   }
 }
 
 resource "azurerm_virtual_machine" "attacker" {
-  name                  = "attacker"
-	location			        = "${azurerm_resource_group.attackgroup.location}"
-	resource_group_name	  = "${azurerm_resource_group.attackgroup.name}"
-  vm_size               = "standard_d3_v2"
+  name                = "attacker"
+  location            = azurerm_resource_group.attackgroup.location
+  resource_group_name = azurerm_resource_group.attackgroup.name
+  vm_size             = "standard_d3_v2"
 
   storage_image_reference {
     publisher = "Canonical"
@@ -33,9 +33,9 @@ resource "azurerm_virtual_machine" "attacker" {
 
   os_profile {
     computer_name  = "attacker"
-    admin_username = "${var.Admin_Username}"
-    admin_password = "${var.Admin_Password}"
-    custom_data    = "${data.template_cloudinit_config.attacker.rendered}"
+    admin_username = var.Admin_Username
+    admin_password = var.Admin_Password
+    custom_data    = data.template_cloudinit_config.attacker.rendered
   }
 
   network_interface_ids = ["${azurerm_network_interface.attacker.id}"]

@@ -8,9 +8,9 @@ terraform {
 }
 
 provider "panos" {
-  hostname = "${var.FW_Mgmt_IP}"
-  username = "${var.Admin_Username}"
-  password = "${var.Admin_Password}"
+  hostname = var.FW_Mgmt_IP
+  username = var.Admin_Username
+  password = var.Admin_Password
 }
 
 resource "panos_management_profile" "imp_allow_ping" {
@@ -19,13 +19,13 @@ resource "panos_management_profile" "imp_allow_ping" {
 }
 
 resource "panos_ethernet_interface" "eth1_1" {
-  name                      = "ethernet1/1"
-  vsys                      = "vsys1"
-  mode                      = "layer3"
-  comment                   = "External interface"
-  enable_dhcp               = true
+  name        = "ethernet1/1"
+  vsys        = "vsys1"
+  mode        = "layer3"
+  comment     = "External interface"
+  enable_dhcp = true
 
-  management_profile = "${panos_management_profile.imp_allow_ping.name}"
+  management_profile = panos_management_profile.imp_allow_ping.name
 }
 
 resource "panos_ethernet_interface" "eth1_2" {
@@ -74,7 +74,7 @@ resource "panos_service_object" "so_81" {
 
 resource "panos_address_object" "intLB" {
   name        = "Azure-Int-LB"
-  value       = "${var.LB_IP}"
+  value       = var.LB_IP
   description = "Azure Int LB Address"
 }
 
@@ -163,28 +163,28 @@ resource "panos_security_policies" "security_policies" {
 resource "panos_nat_policy" "nat1" {
   name                  = "Web1 SSH"
   source_zones          = ["${panos_zone.zone_untrust.name}"]
-  destination_zone      = "${panos_zone.zone_untrust.name}"
-  service               = "${panos_service_object.so_221.name}"
+  destination_zone      = panos_zone.zone_untrust.name
+  service               = panos_service_object.so_221.name
   source_addresses      = ["any"]
   destination_addresses = ["${var.FW_Untrust_IP}"]
   sat_type              = "dynamic-ip-and-port"
   sat_address_type      = "interface-address"
-  sat_interface         = "${panos_ethernet_interface.eth1_2.name}"
+  sat_interface         = panos_ethernet_interface.eth1_2.name
   dat_type              = "static"
-  dat_address           = "${var.Web_IP}"
+  dat_address           = var.Web_IP
   dat_port              = "22"
 }
 
 resource "panos_nat_policy" "nat3" {
   name                  = "Webserver NAT"
   source_zones          = ["${panos_zone.zone_untrust.name}"]
-  destination_zone      = "${panos_zone.zone_untrust.name}"
+  destination_zone      = panos_zone.zone_untrust.name
   service               = "service-http"
   source_addresses      = ["any"]
   destination_addresses = ["${var.FW_Untrust_IP}"]
   sat_type              = "dynamic-ip-and-port"
   sat_address_type      = "interface-address"
-  sat_interface         = "${panos_ethernet_interface.eth1_2.name}"
+  sat_interface         = panos_ethernet_interface.eth1_2.name
   dat_type              = "dynamic"
   dat_address           = "Azure-Int-LB"
   dat_port              = "8080"
@@ -196,17 +196,17 @@ resource "panos_virtual_router" "vr1" {
 }
 
 resource "panos_static_route_ipv4" "default" {
-    name = "default"
-    virtual_router = "${panos_virtual_router.vr1.name}"
-    interface = "${panos_ethernet_interface.eth1_1.name}"
-    destination = "0.0.0.0/0"
-    next_hop = "${var.FW_Default_GW}"
+  name           = "default"
+  virtual_router = panos_virtual_router.vr1.name
+  interface      = panos_ethernet_interface.eth1_1.name
+  destination    = "0.0.0.0/0"
+  next_hop       = var.FW_Default_GW
 }
 
 resource "panos_static_route_ipv4" "internal" {
-    name = "internal"
-    virtual_router = "${panos_virtual_router.vr1.name}"
-    interface = "${panos_ethernet_interface.eth1_2.name}"
-    destination = "${var.Web_Subnet_CIDR}"
-    next_hop = "${var.FW_Internal_GW}"
+  name           = "internal"
+  virtual_router = panos_virtual_router.vr1.name
+  interface      = panos_ethernet_interface.eth1_2.name
+  destination    = var.Web_Subnet_CIDR
+  next_hop       = var.FW_Internal_GW
 }
