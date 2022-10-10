@@ -25,5 +25,5 @@ resource "azurerm_subnet" "attacker" {
   name                 = "attacker"
   resource_group_name  = "${azurerm_resource_group.attackgroup.name}"
   virtual_network_name = "${azurerm_virtual_network.attack-vnet.name}"
-  address_prefix       = "${var.Attack_Subnet_CIDR}"
+  address_prefixes       = ["${var.Attack_Subnet_CIDR}"]
 }

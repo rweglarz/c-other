@@ -1,3 +1,12 @@
+terraform {
+  required_version = ">= 1.2"
+  required_providers {
+    panos = {
+      source = "PaloAltoNetworks/panos"
+    }
+  }
+}
+
 provider "panos" {
   hostname = "${var.FW_Mgmt_IP}"
   username = "${var.Admin_Username}"

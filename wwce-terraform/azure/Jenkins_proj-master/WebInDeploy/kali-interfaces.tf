@@ -11,5 +11,5 @@ resource "azurerm_network_interface" "attacker" {
     private_ip_address = "${var.Attack_IP}"
 		public_ip_address_id = "${azurerm_public_ip.attacker.id}"
 	}
-	depends_on = ["azurerm_public_ip.attacker"]
+	depends_on = [azurerm_public_ip.attacker]
 }

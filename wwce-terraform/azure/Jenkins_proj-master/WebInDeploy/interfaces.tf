@@ -11,7 +11,7 @@ resource "azurerm_network_interface" "fwmanagement" {
     private_ip_address = "${var.FW_Mgmt_IP}"
 		public_ip_address_id = "${azurerm_public_ip.fwmanagement.id}"
 	}
-	depends_on = ["azurerm_public_ip.fwmanagement"]
+	depends_on = [azurerm_public_ip.fwmanagement]
 }
 
 resource "azurerm_network_interface" "fwuntrust" {

@@ -86,8 +86,10 @@ def main (username, password):
     fpath = './WebInDeploy/' + tfstate_file
     if os.path.isfile(fpath):
         tf = Terraform(working_dir='./WebInDeploy')
-        rg_name = tf.output('RG_Name')
-        rg_name1 = tf.output('Attacker_RG_Name')
+        tfo = tf.output()
+        rg_name = tfo['RG_Name']['value']
+        print(rg_name)
+        rg_name1 = tfo['Attacker_RG_Name']['value']
         delete_rg_cmd = 'group delete --name ' + rg_name + ' --yes'
         az_cli(delete_rg_cmd)
     #

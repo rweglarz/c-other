@@ -98,18 +98,18 @@ def send_request(call):
 class DeployRequestException(Exception):
     pass
 
-def walkdict(dict, match):
+def walkdict(pdict, match):
     """
     Finds a key in a dict or nested dict and returns the value associated with it
     :param d: dict or nested dict
     :param key: key value
     :return: value associated with key
     """
-    for key, v in dict.items():
+    for key, v in pdict.items():
         if key == match:
             jobid = v
             return jobid
-        elif isinstance(v, OrderedDict):
+        elif isinstance(v, dict):
             found = walkdict(v, match)
             if found is not None:
                 return found
@@ -143,9 +143,9 @@ def update_fw(fwMgtIP, api_key):
             logger.info("Didn't get http 200 response.  Try again")
         else:
             try:
-                dict = xmltodict.parse(r.text)
-                if isinstance(dict, OrderedDict):
-                    jobid = walkdict(dict, key)
+                pdict = xmltodict.parse(r.text)
+                if isinstance(pdict, dict):
+                    jobid = walkdict(pdict, key)
             except Exception as err:
                 logger.info("Got exception {} trying to parse jobid from Dict".format(err))
             if not jobid:
@@ -201,9 +201,9 @@ def update_fw(fwMgtIP, api_key):
             logger.info("Didn't get http 200 response.  Try again")
         else:
             try:
-                dict = xmltodict.parse(r.text)
-                if isinstance(dict, OrderedDict):
-                    jobid = walkdict(dict, key)
+                pdict = xmltodict.parse(r.text)
+                if isinstance(pdict, dict):
+                    jobid = walkdict(pdict, key)
             except Exception as err:
                 logger.info("Got exception {} trying to parse jobid from Dict".format(err))
             if not jobid:
@@ -257,9 +257,9 @@ def update_fw(fwMgtIP, api_key):
             logger.info("Didn't get http 200 response.  Try again")
         else:
             try:
-                dict = xmltodict.parse(r.text)
-                if isinstance(dict, OrderedDict):
-                    jobid = walkdict(dict, key)
+                pdict = xmltodict.parse(r.text)
+                if isinstance(pdict, dict):
+                    jobid = walkdict(pdict, key)
             except Exception as err:
                 logger.info("Got exception {} trying to parse jobid from Dict".format(err))
             if not jobid:

@@ -15,12 +15,12 @@ resource "azurerm_virtual_machine" "attacker" {
   name                  = "attacker"
 	location			        = "${azurerm_resource_group.attackgroup.location}"
 	resource_group_name	  = "${azurerm_resource_group.attackgroup.name}"
-  vm_size               = "Standard_A3"
+  vm_size               = "standard_d3_v2"
 
   storage_image_reference {
     publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
+    offer     = "0001-com-ubuntu-server-focal"
+    sku       = "20_04-lts"
     version   = "latest"
   }
 

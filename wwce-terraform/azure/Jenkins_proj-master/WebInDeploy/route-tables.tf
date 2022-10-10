@@ -5,9 +5,9 @@ resource "azurerm_route_table" "management" {
   location            = "${data.azurerm_resource_group.resourcegroup.location}"
   resource_group_name = "${data.azurerm_resource_group.resourcegroup.name}"
   route {
-    name           = "internet"
+    name           = "Internet"
     address_prefix = "0.0.0.0/0"
-    next_hop_type  = "internet"
+    next_hop_type  = "Internet"
   }
 }
 resource "azurerm_route_table" "untrust" {
@@ -15,9 +15,9 @@ resource "azurerm_route_table" "untrust" {
   location            = "${data.azurerm_resource_group.resourcegroup.location}"
   resource_group_name = "${data.azurerm_resource_group.resourcegroup.name}"
   route {
-    name           = "internet"
+    name           = "Internet"
     address_prefix = "0.0.0.0/0"
-    next_hop_type  = "internet"
+    next_hop_type  = "Internet"
   }
 }
 
@@ -26,9 +26,9 @@ resource "azurerm_route_table" "webservers" {
   location            = "${data.azurerm_resource_group.resourcegroup.location}"
   resource_group_name = "${data.azurerm_resource_group.resourcegroup.name}"
   route {
-    name           = "internet"
+    name           = "Internet"
     address_prefix = "0.0.0.0/0"
-    next_hop_type  = "internet"
+    next_hop_type  = "Internet"
   }
 }
 

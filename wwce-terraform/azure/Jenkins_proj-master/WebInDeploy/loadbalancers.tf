@@ -53,7 +53,7 @@ resource "azurerm_application_gateway" "appgw1" {
     backend_address_pool_name  = "webservers"
     backend_http_settings_name = "http"
   }
-  depends_on = ["data.azurerm_resource_group.resourcegroup"]
+  depends_on = [data.azurerm_resource_group.resourcegroup]
 }
 
 #### AppGW2 ####
@@ -109,7 +109,7 @@ resource "azurerm_application_gateway" "appgw2" {
     backend_address_pool_name  = "firewalls"
     backend_http_settings_name = "http"
   }
-  depends_on = ["data.azurerm_resource_group.resourcegroup"]
+  depends_on = [data.azurerm_resource_group.resourcegroup]
 }
 
 #### INTERNAL APP FACING LOAD BALANCER ####
@@ -126,7 +126,6 @@ resource "azurerm_lb" "weblb" {
   }
 }
 resource "azurerm_lb_backend_address_pool" "webservers" {
-  resource_group_name = "${data.azurerm_resource_group.resourcegroup.name}"
   loadbalancer_id     = "${azurerm_lb.weblb.id}"
   name                = "webservers"
 }
@@ -136,20 +135,18 @@ resource "azurerm_network_interface_backend_address_pool_association" "webserver
   backend_address_pool_id = "${azurerm_lb_backend_address_pool.webservers.id}"
 }
 resource "azurerm_lb_probe" "webservers" {
-  resource_group_name = "${data.azurerm_resource_group.resourcegroup.name}"
   loadbalancer_id     = "${azurerm_lb.weblb.id}"
   name                = "http-running-probe"
   port                = 8080
 }
 
 resource "azurerm_lb_rule" "webservers" {
-  resource_group_name            = "${data.azurerm_resource_group.resourcegroup.name}"
   loadbalancer_id                = "${azurerm_lb.weblb.id}"
   name                           = "WebRule"
   protocol                       = "Tcp"
   frontend_port                  = 8080
   backend_port                   = 8080
   frontend_ip_configuration_name = "weblbip"
-  backend_address_pool_id        = "${azurerm_lb_backend_address_pool.webservers.id}"
+  backend_address_pool_ids        = ["${azurerm_lb_backend_address_pool.webservers.id}"]
   probe_id                       = "${azurerm_lb_probe.webservers.id}"
 }

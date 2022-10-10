@@ -3,6 +3,7 @@ output "Resource_Group" {
 }
 output "Storage_Account_Access_Key" {
   value = "${azurerm_storage_account.bootstrap.primary_access_key}"
+  sensitive = true
 }
 output "Bootstrap_Bucket" {
   value="bootstrap${lower(random_id.storage_account.hex)}"
