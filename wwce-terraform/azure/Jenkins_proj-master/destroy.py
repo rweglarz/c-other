@@ -75,7 +75,7 @@ def delete_state_files(working_dir, file_list):
         else:
             print('Already deleted file {}'.format(fpath))
 
-def main (username, password):
+def main ():
     #get_default_cli().invoke(['login', "--use-device-code"], out_file=sys.stdout)
     #
     # Destroy Infrastructure
@@ -118,10 +118,6 @@ def main (username, password):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Get Terraform Params')
-    parser.add_argument('-u', '--username', help='Firewall Username', required=True)
-    parser.add_argument('-p', '--password', help='Firewall Password', required=True)
     args = parser.parse_args()
-    username = args.username
-    password = args.password
     # get_default_cli().invoke(['login', "--use-device-code"], out_file=sys.stdout)
-    main(username, password)
+    main()
