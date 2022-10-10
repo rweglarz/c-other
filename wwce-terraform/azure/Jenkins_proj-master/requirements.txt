@@ -1,0 +1,7 @@
+azure-cli
+azure-common
+azure-storage-file
+pandevice
+python_terraform
+requests
+xmltodict
