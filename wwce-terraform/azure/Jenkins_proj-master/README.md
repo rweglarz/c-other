@@ -1,4 +1,5 @@
-1. prepare the environment
+prepare the environment
+=========
 create a python3 virutal env and start using it:
 ```
 python3 -m venv ~/venv/csf-s1
@@ -16,7 +17,8 @@ python3 deploy.py -u <username> -p <password> -j <region> -r <resource group>
 ```
 
 
-2. tests
+tests
+=========
 *step 1* launch the exploit with only WAF inline
 
 ```
@@ -31,7 +33,8 @@ python3 ./send_command.py -c "netstat -tn 2>/dev/null |grep :443"
 ```
 
 
-3. cleanup the lab
+cleanup the lab
+=========
 ```
 python3 ./destroy.py 
 ```
