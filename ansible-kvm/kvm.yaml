@@ -1,0 +1,103 @@
+---
+- name: KVM Bootstrap
+  hosts:
+    all
+
+  vars:
+    # Directories for bootstrap ISO
+    directories:
+      - name: "config"
+      - name: "software"
+      - name: "license"
+      - name: "content"
+      - name: "plugins"
+
+  tasks:
+    - name: host preperation
+      block: 
+        - name: Update cache then install mkisofs
+          ansible.builtin.apt:
+            name: mkisofs
+            update_cache: yes
+          become: yes
+
+
+    - name: Display vm name
+      debug:
+        msg:
+          - "{{ fw_name }}"
+          - "{{ image_local_location }}"
+
+
+    - name: Get VMs list
+      community.libvirt.virt:
+        command: list_vms
+      register: initial_vms
+      changed_when: no
+
+
+    - name: build the vm
+      block: 
+        - name: Create bootstrap directories
+          ansible.builtin.file:
+            path: "{{ bootstrap_location }}/{{ item.name }}"
+            state: directory
+          with_items: "{{ directories }}"
+
+        - name: Create init-cfg.txt
+          copy:
+            dest: "{{ bootstrap_location }}/config/init-cfg.txt"
+            content: |
+              type=dhcp-client
+              hostname={{ fw_name }}
+              panorama-server={{ panorama1 }}
+              panorama-server-2={{ panorama2 }}
+              dgname={{ device_group }}
+              tplname={{ template_stack }}
+              auth-key={{ sw_plugin_authkey }}
+              plugin-op-commands=panorama-licensing-mode-on
+
+        - name: Create bootstrap ISO
+          shell: "mkisofs -o {{ iso_location }} -iso-level 4 {{ bootstrap_location }}"
+
+        - name: Copy base image to kvm host
+          ansible.builtin.copy:
+            src: "{{ image_local_location }}"
+            dest: "{{ image_remote_location }}"
+            checksum: "{{ panos_sha[panos_version] }}"
+
+        - name: Copy base image to runtime location
+          ansible.builtin.copy:
+            src: "{{ image_remote_location }}"
+            dest: "{{ image_runtime_location }}"
+            remote_src: yes
+
+        - name: Create VM
+          community.libvirt.virt:
+            command: define
+            xml: "{{ lookup('template', 'pa-vm-generic.xml.j2') }}"
+
+      when: "fw_name not in initial_vms.list_vms"
+
+
+    - name: Get VMs list again
+      community.libvirt.virt:
+        command: list_vms
+      register: end_vms
+      changed_when: no
+
+    - name: Display VMs
+      debug:
+        msg:
+          - "{{ end_vms }}"
+
+
+    - name: Start VM
+      community.libvirt.virt:
+        name: "{{ fw_name }}"
+        state: running
+      register: vm_start_results
+      until: "vm_start_results is success"
+      retries: 15
+      delay: 2
+

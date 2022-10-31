@@ -1,0 +1,9 @@
+image_local_location: "/Users/{{ user }}/iso/PA-VM-KVM-{{ panos_version }}.qcow2"
+image_remote_location: "/home/{{ user }}/PA-VM-KVM-{{ panos_version }}.qcow2"
+
+bootstrap_location: "/tmp/pa-vm-{{ fw_name }}-bootstrap"
+image_runtime_location: "/tmp/pa-vm-{{ fw_name }}.qcow2"
+iso_location: "/tmp/pa-vm-{{ fw_name }}-bootstrap.iso"
+
+panos_sha:
+  10.2.2-h2: "084dc9ae463c6871137371dce883f953e9f89b3c"

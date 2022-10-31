@@ -1,0 +1,10 @@
+fw_name: "fw-01"
+device_group: "kvm"
+template_stack: "kvm"
+
+panos_version: "10.2.2-h2"
+kvm_bridge: "virbr0"
+
+vcpus: 2
+#memory: 4718592
+memory: 6815744
